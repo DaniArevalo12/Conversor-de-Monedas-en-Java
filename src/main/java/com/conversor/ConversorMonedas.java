@@ -11,7 +11,7 @@ public class ConversorMonedas {
         Gson gson = new Gson();
 
         System.out.println("===========================================");
-        System.out.println("      💱 CONVERSOR DE MONEDAS JAVA 💱");
+        System.out.println("       CONVERSOR DE MONEDAS JAVA");
         System.out.println("===========================================");
 
         try {
@@ -32,15 +32,16 @@ public class ConversorMonedas {
 
             if (tasa != null) {
                 double resultado = cantidad * tasa;
-                System.out.println("\n===========================================");
+                System.out.println();
+                System.out.println("===========================================");
                 System.out.println("   " + cantidad + " " + base + " = " + resultado + " " + destino);
                 System.out.println("===========================================");
             } else {
-                System.out.println("⚠️ Moneda destino no encontrada en la lista de tasas.");
+                System.out.println("Moneda destino no encontrada en la lista de tasas.");
             }
 
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         } finally {
             scanner.close();
         }
