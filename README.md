@@ -18,15 +18,17 @@ Este proyecto es un conversor de monedas simple e interactivo que permite a los 
 ## 🛠️ Tecnologías Utilizadas
 
 - **Java 17**: Lenguaje de programación principal
-- **Maven**: Gestión de dependencias y construcción del proyecto
-- **Gson 2.11.0**: Librería para parsear respuestas JSON
-- **HttpClient**: Cliente HTTP nativo de Java para consumir la API
-- **ExchangeRate-API**: API externa para obtener tasas de cambio
+- **Gson 2.11.0**: Librería para parsear respuestas JSON de la API
+- **HttpClient**: Cliente HTTP nativo de Java 11+ para consumir APIs REST
+- **ExchangeRate-API**: API externa para obtener tasas de cambio en tiempo real
+- **Maven** (opcional): Gestión de dependencias y construcción del proyecto
 
 ## 📁 Estructura del Proyecto
 
 ```
 ConversorMonedas/
+├── lib/
+│   └── gson-2.11.0.jar                          # Librería Gson para parsear JSON
 ├── src/
 │   └── main/
 │       └── java/
@@ -36,7 +38,8 @@ ConversorMonedas/
 │                   ├── ConversorMonedas.java     # Lógica principal del conversor
 │                   ├── ClienteApi.java           # Cliente para consumir la API
 │                   └── Moneda.java               # Modelo de datos para la respuesta JSON
-├── pom.xml                                       # Configuración de Maven
+├── out/                                          # Archivos .class compilados (generado)
+├── pom.xml                                       # Configuración de Maven (opcional)
 └── README.md                                     # Este archivo
 ```
 
@@ -47,10 +50,10 @@ ConversorMonedas/
 Asegúrate de tener instalado en tu sistema:
 
 - **Java JDK 17** o superior
-- **Maven 3.6** o superior
 - Conexión a Internet (para consumir la API)
+- Librería Gson 2.11.0 (incluida en el proyecto)
 
-### Instalación
+### Instalación y Configuración
 
 1. **Clona el repositorio** o descarga los archivos del proyecto:
 ```bash
@@ -58,29 +61,53 @@ git clone <url-del-repositorio>
 cd ConversorMonedas
 ```
 
-2. **Compila el proyecto** con Maven:
+2. **Descarga la librería Gson** (si no está incluida):
+   - Ve a [Maven Repository - Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson/2.11.0)
+   - Descarga el archivo `gson-2.11.0.jar`
+   - Crea una carpeta `lib` en la raíz del proyecto
+   - Coloca el archivo JAR dentro de la carpeta `lib`
+
+### Compilación y Ejecución
+
+#### Opción 1: Compilación Manual (Recomendada)
+
+**1. Compila el proyecto:**
 ```bash
-mvn clean compile
+javac -encoding UTF-8 -cp "lib/gson-2.11.0.jar" src/main/java/com/conversor/*.java -d out
 ```
 
-3. **Ejecuta la aplicación**:
+Este comando:
+- Compila todos los archivos `.java` del paquete `com.conversor`
+- Usa codificación UTF-8 para soportar caracteres especiales
+- Incluye la librería Gson en el classpath
+- Genera los archivos `.class` en la carpeta `out`
+
+**2. Ejecuta la aplicación:**
 ```bash
+java -cp "lib/gson-2.11.0.jar;out" com.conversor.Main
+```
+
+**En Linux/Mac usa `:` en lugar de `;`:**
+```bash
+java -cp "lib/gson-2.11.0.jar:out" com.conversor.Main
+```
+
+#### Opción 2: Usando Maven
+
+Si prefieres usar Maven:
+
+```bash
+mvn clean compile
 mvn exec:java -Dexec.mainClass="com.conversor.Main"
 ```
 
-O alternativamente, puedes empaquetar el proyecto y ejecutarlo:
-```bash
-mvn clean package
-java -cp target/ConversorMonedas-1.0-SNAPSHOT.jar com.conversor.Main
-```
-
-### Ejecución desde el IDE
+#### Opción 3: Desde el IDE
 
 Si usas IntelliJ IDEA, Eclipse o NetBeans:
 
-1. Importa el proyecto como un proyecto Maven existente
-2. Espera a que Maven descargue las dependencias
-3. Ejecuta la clase `Main.java`
+1. Abre el proyecto en tu IDE
+2. Asegúrate de que la librería `gson-2.11.0.jar` esté en el classpath
+3. Ejecuta directamente la clase `Main.java`
 
 ## 📖 Uso de la Aplicación
 
@@ -99,10 +126,34 @@ Una vez iniciada la aplicación, sigue estos pasos:
 ===========================================
 Ingrese moneda base (ej: USD, EUR, COP): USD
 Ingrese moneda destino (ej: COP, MXN, ARS): COP
-Ingrese cantidad a convertir: 100
+Ingrese cantidad a convertir: 2000
 
 ===========================================
-   100.0 USD = 439250.0 COP
+   2000.0 USD = 7673771.0 COP
+===========================================
+```
+
+### Casos de Uso Adicionales
+
+**Convertir de Euros a Pesos Mexicanos:**
+```
+Ingrese moneda base (ej: USD, EUR, COP): EUR
+Ingrese moneda destino (ej: COP, MXN, ARS): MXN
+Ingrese cantidad a convertir: 500
+
+===========================================
+   500.0 EUR = 10500.25 MXN
+===========================================
+```
+
+**Convertir de Pesos Colombianos a Dólares:**
+```
+Ingrese moneda base (ej: USD, EUR, COP): COP
+Ingrese moneda destino (ej: COP, MXN, ARS): USD
+Ingrese cantidad a convertir: 5000000
+
+===========================================
+   5000000.0 COP = 1302.08 USD
 ===========================================
 ```
 
